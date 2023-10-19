@@ -48,6 +48,12 @@ st.caption('나를 가장 잘 알아주는 내 친구 코코와 일상을 기록
 
 import openai
 import streamlit as st
+def generate_dalle_image(prompt):
+    """Generate an image using DALL-E-3 based on the given prompt."""
+    # Creating image using DALL-E-3 with the given prompt
+    response = openai.Image.create(prompt=prompt, n=1, size="1024x1024")
+    return response['data'][0]['url']
+
 
 col1, col2 = st.columns(2)
 with col1:
@@ -76,6 +82,8 @@ if start_interview:
         response = openai.ChatCompletion.create(model="gpt-4", messages=st.session_state.messages)
         msg = response.choices[0].message
         st.session_state.messages.append(msg)
+        image_url = generate_dalle_image(msg['content'])
+        st.image(image_url, caption='코코의 오늘 감정', use_column_width=True)
     except Exception as e:
         st.write("에러", str(e))
 
@@ -88,6 +96,8 @@ if user_input := st.chat_input():
         response = openai.ChatCompletion.create(model="gpt-4", messages=st.session_state.messages)
         msg = response.choices[0].message
         st.session_state.messages.append(msg)
+        image_url = generate_dalle_image(msg['content'])
+        st.image(image_url, caption='코코의 오늘 감정', use_column_width=True)
     except Exception as e:
         st.write("에러", str(e))
 
