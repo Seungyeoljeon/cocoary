@@ -92,5 +92,5 @@ if user_input := st.chat_input():
         st.write("에러", str(e))
 
 if "started" in st.session_state and st.session_state["started"]:
-    for message in st.session_state.get("messages", [])[0:]:
+    for message in st.session_state.get("messages", [])[1:]:
         st.chat_message(message["role"]).write(message["content"])
