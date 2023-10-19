@@ -48,10 +48,23 @@ st.caption('나를 가장 잘 알아주는 내 친구 코코와 일상을 기록
 
 import openai
 import streamlit as st
+
+def extract_emotion_from_response(response):
+    # Some basic keywords for emotions (this can be expanded or refined)
+    emotions = ["happy", "sad", "angry", "surprised", "joyful", "confused", "excited", "worried"]
+    
+    # Check which emotion keyword is present in the response
+    for emotion in emotions:
+        if emotion in response.lower():
+            return emotion
+    return "neutral"
+
+def generate_dalle_prompt_from_emotion(emotion):
+    return f"{emotion.capitalize()} Welsh Corgi named Coco"
 def generate_dalle_image(prompt):
-    """Generate an Welsh Corgi named Coco character image using DALL-E-3 based on the given prompt. Coco expresses his feelings according to the conversation."""
+    """Generate an image using DALL-E-3 based on the given prompt."""
     # Creating image using DALL-E-3 with the given prompt
-    response = openai.Image.create(prompt=prompt, n=1, size="512x512")
+    response = openai.Image.create(prompt=prompt, n=1, size="256X256")
     return response['data'][0]['url']
 
 
@@ -82,7 +95,9 @@ if start_interview:
         response = openai.ChatCompletion.create(model="gpt-4", messages=st.session_state.messages)
         msg = response.choices[0].message
         st.session_state.messages.append(msg)
-        image_url = generate_dalle_image('Coco responds to today daily life by answering the following.' + msg['content'])
+        emotion = extract_emotion_from_response(msg['content'])
+        prompt = generate_dalle_prompt_from_emotion(emotion)
+        image_url = generate_dalle_image(prompt)
         st.image(image_url, caption='코코의 오늘 감정', use_column_width=True)
     except Exception as e:
         st.write("에러", str(e))
@@ -96,7 +111,9 @@ if user_input := st.chat_input():
         response = openai.ChatCompletion.create(model="gpt-4", messages=st.session_state.messages)
         msg = response.choices[0].message
         st.session_state.messages.append(msg)
-        image_url = generate_dalle_image('Coco responds to today daily life by answering the following.' + msg['content'])
+        emotion = extract_emotion_from_response(msg['content'])
+        prompt = generate_dalle_prompt_from_emotion(emotion)
+        image_url = generate_dalle_image(prompt)
         st.image(image_url, caption='코코의 오늘 감정', use_column_width=True)
     except Exception as e:
         st.write("에러", str(e))
