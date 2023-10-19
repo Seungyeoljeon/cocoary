@@ -159,7 +159,21 @@ if start_interview:
         response = openai.ChatCompletion.create(model="gpt-4", messages=st.session_state.messages)
         msg = response.choices[0].message
         st.session_state.messages.append(msg)
-        emotion = completion_executor.execute(msg['content'])
+        request_data = {
+    'text': msg['content'],
+    'maxTokens': 30,
+    'temperature': 0.5,
+    'topK': 0,
+    'topP': 0.8,
+    'repeatPenalty': 5.0,
+    'start': '\n감정:',
+    'restart': '\n###\n문장:',
+    'stopBefore': ['###', '감정:', '질문:', '###\n'],
+    'includeTokens': True,
+    'includeAiFilters': False,
+    'includeProbs': False
+}
+        emotion = completion_executor.execute(request_data)
         prompt = generate_dalle_prompt_from_emotion(emotion)
         image_url = generate_dalle_image(prompt)
         st.image(image_url, caption='코코의 오늘 감정', use_column_width="auto")
@@ -176,7 +190,21 @@ if user_input := st.chat_input():
         response = openai.ChatCompletion.create(model="gpt-4", messages=st.session_state.messages)
         msg = response.choices[0].message
         st.session_state.messages.append(msg)
-        emotion = completion_executor.execute(msg['content'])
+        request_data = {
+    'text': msg['content'],
+    'maxTokens': 30,
+    'temperature': 0.5,
+    'topK': 0,
+    'topP': 0.8,
+    'repeatPenalty': 5.0,
+    'start': '\n감정:',
+    'restart': '\n###\n문장:',
+    'stopBefore': ['###', '감정:', '질문:', '###\n'],
+    'includeTokens': True,
+    'includeAiFilters': False,
+    'includeProbs': False
+}
+        emotion = completion_executor.execute(request_data)
         prompt = generate_dalle_prompt_from_emotion(emotion)
         image_url = generate_dalle_image(prompt)
         st.image(image_url, caption='코코의 오늘 감정', use_column_width="auto")
