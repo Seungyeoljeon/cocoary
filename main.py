@@ -123,7 +123,7 @@ import streamlit as st
 #     return f"{emotion.capitalize()} Welsh Corgi named Coco"
 
 def generate_dalle_prompt_from_emotion(emotion):
-    return f"{emotion.capitalize()} Welsh Corgi named Coco"
+    return f"Coco, a Welsh corgi dog who communicates with her owner and expresses feelings like {emotion.capitalize()}"
 
 def generate_dalle_image(prompt):
     """Generate an image using DALL-E-3 based on the given prompt."""
@@ -189,3 +189,6 @@ if user_input := st.chat_input():
 if "started" in st.session_state and st.session_state["started"]:
     for message in st.session_state.get("messages", [])[1:]:
         st.chat_message(message["role"]).write(message["content"])
+
+st.write(emotion)
+st.write(prompt)
