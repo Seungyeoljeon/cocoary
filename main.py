@@ -99,8 +99,8 @@ if start_interview:
         prompt = generate_dalle_prompt_from_emotion(emotion)
         image_url = generate_dalle_image(prompt)
         st.image(image_url, caption='코코의 오늘 감정', use_column_width="auto")
-        st.wirte(emotion)
-        st.wirte(prompt)
+        st.write(emotion)
+        st.write(prompt)
     except Exception as e:
         st.write("에러", str(e))
 
@@ -117,8 +117,8 @@ if user_input := st.chat_input():
         prompt = generate_dalle_prompt_from_emotion(emotion)
         image_url = generate_dalle_image(prompt)
         st.image(image_url, caption='코코의 오늘 감정', use_column_width="auto")
-        st.wirte(emotion)
-        st.wirte(prompt)
+        st.write(emotion)
+        st.write(prompt)
     except Exception as e:
         st.write("에러", str(e))
 
