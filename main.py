@@ -49,7 +49,7 @@ st.caption('나를 가장 잘 알아주는 내 친구 코코와 일상을 기록
 import openai
 import streamlit as st
 
-def extract_emotion_from_response(response):
+def extract_emotion_from_response_korean(response):
     # Some basic keywords for emotions (this can be expanded or refined)
     emotions = ["happy", "sad", "angry", "surprised", "joyful", "confused", "excited", "worried"]
     
@@ -95,11 +95,9 @@ if start_interview:
         response = openai.ChatCompletion.create(model="gpt-4", messages=st.session_state.messages)
         msg = response.choices[0].message
         st.session_state.messages.append(msg)
-        emotion = extract_emotion_from_response(msg['content'])
-        prompt = generate_dalle_prompt_from_emotion(emotion)
+        prompt = generate_dalle_prompt_with_gpt_emotion(msg['content'])
         image_url = generate_dalle_image(prompt)
         st.image(image_url, caption='코코의 오늘 감정', use_column_width="auto")
-
     except Exception as e:
         st.write("에러", str(e))
 
@@ -112,17 +110,12 @@ if user_input := st.chat_input():
         response = openai.ChatCompletion.create(model="gpt-4", messages=st.session_state.messages)
         msg = response.choices[0].message
         st.session_state.messages.append(msg)
-        emotion = extract_emotion_from_response(msg['content'])
-        prompt = generate_dalle_prompt_from_emotion(emotion)
+        prompt = generate_dalle_prompt_with_gpt_emotion(msg['content'])
         image_url = generate_dalle_image(prompt)
         st.image(image_url, caption='코코의 오늘 감정', use_column_width="auto")
-
     except Exception as e:
         st.write("에러", str(e))
 
-st.write(emotion)
-st.write(prompt)
 if "started" in st.session_state and st.session_state["started"]:
     for message in st.session_state.get("messages", [])[1:]:
         st.chat_message(message["role"]).write(message["content"])
-
