@@ -129,8 +129,8 @@ if user_input := st.chat_input():
     except Exception as e:
         st.write("에러", str(e))
 
-st.write(emotion)
 st.write(prompt)
+
 if "started" in st.session_state and st.session_state["started"]:
     for message in st.session_state.get("messages", [])[1:]:
         st.chat_message(message["role"]).write(message["content"])
