@@ -64,7 +64,7 @@ completion_executor = CompletionExecutor(
     host='clovastudio.apigw.ntruss.com',
     api_key='NTA0MjU2MWZlZTcxNDJiY9Zxd0Yp8yO0KRGL/G2THa83nyLxrWOgQGh5j8+XuTW0hfGBTfPfii1P2N7TKAodSX0GI8BVPSNQWtIiKS9Nnhfjr3hlF6aQegJB/KktvQ8a2YfUsx3DvEYe6qclZCvk9zqnRnKWrAJ4d/iN1RtzPJsYAZ5HuUiWYKtB1iMtLy/e5rEuraNaRMke5fvv2+VHuM1R2JNKNrcIbfWVfvsZbs4=',
     api_key_primary_val = 'psYV8l6gXowugYMsw4BEzW01IqtOimhrNsK0itQW',
-    request_id='ab4860c466f0481486755ae26871f56c'
+    request_id='74915296c74046429150d87d005cee06'
 )
 
 
