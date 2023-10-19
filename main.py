@@ -61,6 +61,19 @@ def extract_emotion_from_response_korean(response):
 
 def generate_dalle_prompt_from_emotion(emotion):
     return f"{emotion.capitalize()} Welsh Corgi named Coco"
+
+def generate_dalle_prompt_with_gpt_emotion(response, gpt_model="gpt-3.5-turbo"):
+    # Asking GPT about the main emotion of the response
+    emotion_query = {
+        "model": gpt_model,
+        "messages": [{"role": "system", "content": "You are a helpful emotion extraction assistant."},
+                    {"role": "user", "content": response},
+                    {"role": "assistant", "content": "Based on the above content, what is the main emotion expressed?"}]
+    }
+    emotion_response = openai.ChatCompletion.create(**emotion_query)
+    emotion = emotion_response['choices'][0]['message']['content']
+    return f"{emotion.capitalize()} Welsh Corgi named Coco"
+
 def generate_dalle_image(prompt):
     """Generate an image using DALL-E-3 based on the given prompt."""
     # Creating image using DALL-E-3 with the given prompt
