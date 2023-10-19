@@ -64,7 +64,7 @@ def generate_dalle_prompt_from_emotion(emotion):
 def generate_dalle_image(prompt):
     """Generate an image using DALL-E-3 based on the given prompt."""
     # Creating image using DALL-E-3 with the given prompt
-    response = openai.Image.create(prompt=prompt, n=1, size="256X256")
+    response = openai.Image.create(prompt=prompt, n=1, size="256x256")
     return response['data'][0]['url']
 
 
