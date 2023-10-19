@@ -166,9 +166,9 @@ if start_interview:
     'topK': 0,
     'topP': 0.8,
     'repeatPenalty': 5.0,
-    'start': '\n감정:',
-    'restart': '\n###\n문장:',
-    'stopBefore': ['###', '감정:', '질문:', '###\n'],
+    'start': '',
+    'restart': '',
+    'stopBefore': '',
     'includeTokens': True,
     'includeAiFilters': False,
     'includeProbs': False
@@ -197,9 +197,9 @@ if user_input := st.chat_input():
     'topK': 0,
     'topP': 0.8,
     'repeatPenalty': 5.0,
-    'start': '\n감정:',
-    'restart': '\n###\n문장:',
-    'stopBefore': ['###', '감정:', '질문:', '###\n'],
+    'start': '',
+    'restart': '',
+    'stopBefore': '',
     'includeTokens': True,
     'includeAiFilters': False,
     'includeProbs': False
@@ -208,7 +208,7 @@ if user_input := st.chat_input():
         prompt = generate_dalle_prompt_from_emotion(emotion)
         image_url = generate_dalle_image(prompt)
         st.image(image_url, caption='코코의 오늘 감정', use_column_width="auto")
-        st.write(prompt)
+
     except Exception as e:
         st.write("에러", str(e))
 
@@ -217,6 +217,3 @@ if user_input := st.chat_input():
 if "started" in st.session_state and st.session_state["started"]:
     for message in st.session_state.get("messages", [])[1:]:
         st.chat_message(message["role"]).write(message["content"])
-
-st.write(emotion)
-st.write(prompt)
