@@ -86,7 +86,7 @@ if start_interview:
     if not life or not description:  # life, description이 비어있는지 확인
         st.warning("오늘 있었던 일과 기분을 입력해주세요.")
     else:
-        interviewer = life + description + "위 내용을 참고해서 일기를 쓰도록 돕는 친구 역할을 수행한다. 답변은 한글로 한다. 오늘 있었던 일과와 기분에 대해서 강아지처럼 물어본다. 너의 이름은 '코코'이다. 반갑게 인사부터 해줘."
+        interviewer = life + description + "위 내용을 참고해서 일기를 쓰도록 돕는 웰시코기 강아지 친구 역할을 수행한다. 답변은 한글로 한다. 오늘 있었던 일과와 기분에 대해서 강아지처럼 물어본다. 너의 이름은 '코코'이다. 반갑게 인사부터 해줘. 나는 프로그램이라서 라고 거절하지 않도록 한다."
         st.session_state["messages"] = [{"role": "user", "content": interviewer}]
         st.session_state["started"] = True  # 면접 시작 상태를 저장합니다.
 
@@ -121,3 +121,6 @@ if user_input := st.chat_input():
 if "started" in st.session_state and st.session_state["started"]:
     for message in st.session_state.get("messages", [])[1:]:
         st.chat_message(message["role"]).write(message["content"])
+
+st.wirte(emotion)
+st.wirte(prompt)
