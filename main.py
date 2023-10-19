@@ -136,3 +136,70 @@ if user_input := st.chat_input():
 if "started" in st.session_state and st.session_state["started"]:
     for message in st.session_state.get("messages", [])[1:]:
         st.chat_message(message["role"]).write(message["content"])
+
+
+# -*- coding: utf-8 -*-
+
+import base64
+import json
+import http.client
+
+
+class CompletionExecutor:
+    def __init__(self, host, api_key, api_key_primary_val, request_id):
+        self._host = host
+        self._api_key = api_key
+        self._api_key_primary_val = api_key_primary_val
+        self._request_id = request_id
+
+    def _send_request(self, completion_request):
+        headers = {
+            'Content-Type': 'application/json; charset=utf-8',
+            'X-NCP-CLOVASTUDIO-API-KEY': self._api_key,
+            'X-NCP-APIGW-API-KEY': self._api_key_primary_val,
+            'X-NCP-CLOVASTUDIO-REQUEST-ID': self._request_id
+        }
+
+        conn = http.client.HTTPSConnection(self._host)
+        conn.request('POST', '/testapp/v1/completions/LK-D2', json.dumps(completion_request), headers)
+        response = conn.getresponse()
+        result = json.loads(response.read().decode(encoding='utf-8'))
+        conn.close()
+        return result
+
+    def execute(self, completion_request):
+        res = self._send_request(completion_request)
+        if res['status']['code'] == '20000':
+            return res['result']['text']
+        else:
+            return 'Error'
+
+
+if __name__ == '__main__':
+    completion_executor = CompletionExecutor(
+        host='clovastudio.apigw.ntruss.com',
+        api_key='NTA0MjU2MWZlZTcxNDJiY9Zxd0Yp8yO0KRGL/G2THa83nyLxrWOgQGh5j8+XuTW0hfGBTfPfii1P2N7TKAodSX0GI8BVPSNQWtIiKS9Nnhfjr3hlF6aQegJB/KktvQ8a2YfUsx3DvEYe6qclZCvk9zqnRnKWrAJ4d/iN1RtzPJsYAZ5HuUiWYKtB1iMtLy/e5rEuraNaRMke5fvv2+VHuM1R2JNKNrcIbfWVfvsZbs4=',
+        api_key_primary_val = 'psYV8l6gXowugYMsw4BEzW01IqtOimhrNsK0itQW',
+        request_id='ab4860c466f0481486755ae26871f56c'
+    )
+
+    preset_text = '이것은 문장 감정 분석기 입니다.\n\n문장: "기분 진짜 좋다"\n감정: 긍정\n###\n문장: "아오 진짜 짜증나게 하네"\n감정: 부정\n###\n문장: "이걸로 보내드릴게요"\n감정: 중립\n###\n문장: "새로나온 뮤비 봤어? 장난아님"\n감정: 긍정\n###\n문장: "택배가 도착했어요"\n감정: 설레임\n###\n문장: "뭐냐"\n감정: 놀람\n###\n문장: "퇴근하고 싶다"\n감정: 피곤함\n###\n문장: "빨리빨리 해봐"\n감정: 다급함\n###\n문장: "이거 색이 맘에 안들어" '
+
+    request_data = {
+        'text': preset_text,
+        'maxTokens': 30,
+        'temperature': 0.5,
+        'topK': 0,
+        'topP': 0.8,
+        'repeatPenalty': 5.0,
+        'start': '\n감정:',
+        'restart': '\n###\n문장:',
+        'stopBefore': ['###', '감정:', '질문:', '###\n'],
+        'includeTokens': True,
+        'includeAiFilters': False,
+        'includeProbs': False
+    }
+
+    response_text = completion_executor.execute(request_data)
+    st.write(preset_text)
+    st.write(response_text)
